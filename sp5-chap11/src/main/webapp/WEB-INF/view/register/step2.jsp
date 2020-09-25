@@ -12,22 +12,22 @@
     <form:form action="step3" modelAttribute="registerRequest">
     <p>
         <label><spring:message code="email"/> <br>
-        <form:input path="email" />
+        <form:input path="email" /><form:errors path="email"/>
         </label>
     </p>
     <p>
         <label>이름:<br>
-        <form:input path="name" />
+        <form:input path="name" /><form:errors path="name"/>
         </label>
     </p>
     <p>
         <label>비밀번호:<br>
-        <form:password path="password" />
+        <form:password path="password" /><form:errors path="password"/>
         </label>
     </p>
     <p>
         <label>비밀번호 확인:<br>
-        <form:password path="confirmPassword" />
+        <form:password path="confirmPassword" /><form:errors path="password"/>
         </label>
     </p>
     <input type="submit" value="가입 완료">

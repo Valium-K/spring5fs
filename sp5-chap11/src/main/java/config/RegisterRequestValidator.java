@@ -7,6 +7,7 @@ import org.springframework.validation.Validator;
 import spring.RegisterRequest;
 
 
+
 public class RegisterRequestValidator implements Validator {
     private static final String emailRegExp =
             "^[_a-z0-9-]+(.[_a-z0-9-]+)*@(?:\\w+\\.)+\\w+$";
@@ -17,6 +18,7 @@ public class RegisterRequestValidator implements Validator {
     }
 
     // 받은 객체가 RegisterRequest 클래스로 타입변환 가능한지 확인
+    // 글로벌 범위의 Validator
     @Override
     public boolean supports(Class<?> aClass) {
         return RegisterRequest.class.isAssignableFrom(aClass);

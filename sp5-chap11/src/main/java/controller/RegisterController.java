@@ -4,12 +4,15 @@ import config.RegisterRequestValidator;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import spring.DuplicateMemberException;
 import spring.MemberRegisterService;
 import spring.RegisterRequest;
 import spring.WrongIdPasswordException;
+
+import javax.validation.Valid;
 
 @Controller
 public class RegisterController {
@@ -44,7 +47,7 @@ public class RegisterController {
 
 	@PostMapping("/register/step3")
 	// 커맨드 객체(registerRequest)뒤에 Errors 객체가 위치해야한다.
-	public String handleStep3(RegisterRequest regReq, Errors errors) {
+	public String handleStep3(@Valid RegisterRequest regReq, Errors errors) {
 		new RegisterRequestValidator().validate(regReq, errors);
 		if(errors.hasErrors()) {
 			return "register/step2";
@@ -61,6 +64,12 @@ public class RegisterController {
 			errors.reject("notMatchingIdPassword");
 			return "register/step2";
 		}
+	}
+
+	// 컨트롤러 범위 Validator 설정
+	@InitBinder
+	protected void initBinder(WebDataBinder binder) {
+		binder.setValidator(new RegisterRequestValidator());
 	}
 
 }
