@@ -6,11 +6,13 @@ import java.util.List;
 
 public class MemberDao {
 
+    @Autowired
     private MemberDB memberDB;
 
-    public MemberDao(MemberDB memberDB) {
-        this.memberDB = memberDB;
-    }
+    public MemberDao() {}
+//    public MemberDao(MemberDB memberDB) {
+//        this.memberDB = memberDB;
+//    }
 
 
 

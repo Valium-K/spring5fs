@@ -5,11 +5,13 @@ import spring.member.Exceptions.DuplicationException;
 
 public class MemberRegisterService {
 
+    @Autowired
     private MemberDao memberDao;
 
-    public MemberRegisterService(MemberDao memberDao) {
-        this.memberDao = memberDao;
-    }
+    public MemberRegisterService() {}
+//    public MemberRegisterService(MemberDao memberDao) {
+//        this.memberDao = memberDao;
+//    }
 
     public int regist(RegisterRequest request) {
         if(memberDao.selectByEmail(request.getEmail()) != null)

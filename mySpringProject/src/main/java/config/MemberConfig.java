@@ -10,20 +10,26 @@ import spring.member.MemberDB;
 import spring.member.MemberDao;
 import spring.member.MemberRegisterService;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Configuration
 public class MemberConfig {
 
     @Bean
     public MemberDB memberDB() {
-        return new MemberDB();
+        MemberDB memberDB =  new MemberDB();
+        memberDB.setMemberList(new ArrayList<>());
+
+        return memberDB;
     }
     @Bean
-    public MemberDao memberDao(MemberDB memberDB) {
-        return new MemberDao(memberDB);
+    public MemberDao memberDao() {
+        return new MemberDao();
     }
     @Bean
-    public MemberRegisterService memberRegisterService(MemberDao memberDao) {
-        return new MemberRegisterService(memberDao);
+    public MemberRegisterService memberRegisterService() {
+        return new MemberRegisterService();
     }
     @Bean
     public MemberController memberController() {
