@@ -10,6 +10,8 @@ import spring.AuthInfo;
 import spring.AuthService;
 import spring.WrongIdPasswordException;
 
+import javax.servlet.http.HttpSession;
+
 // 로그인 요청 처리 컨트롤러
 @Controller
 @RequestMapping("/login")
@@ -26,13 +28,16 @@ public class LoginController {
     }
 
     @PostMapping
-    public String submit(LoginCommand loginCommand, Errors errors) {
+    public String submit(LoginCommand loginCommand, Errors errors, HttpSession session) {
         new LoginCommandValidator().validate(loginCommand, errors);
         if(errors.hasErrors())
             return "login/loginForm";
 
         try {
             AuthInfo authInfo = authService.authenticate(loginCommand.getEmail(), loginCommand.getPassword());
+
+            // 로그인 성공 시 HttpSession의 "authInfo"속성에 authInfo객체를 저장.
+            session.setAttribute("authInfo", authInfo);
             return "login/loginSuccess";
         } catch (WrongIdPasswordException e) {
             errors.reject("idPasswordNotMatching");
