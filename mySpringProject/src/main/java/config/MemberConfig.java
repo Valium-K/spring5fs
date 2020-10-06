@@ -1,14 +1,12 @@
 package config;
 
+import controller.MainController;
 import controller.MemberController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import spring.member.Member;
-import spring.member.MemberDB;
-import spring.member.MemberDao;
-import spring.member.MemberRegisterService;
+import spring.member.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,5 +33,9 @@ public class MemberConfig {
     public MemberController memberController() {
         return new MemberController();
     }
-    
+
+//    @Bean
+//    public RegisterRequest registerRequest() {
+//        return new RegisterRequest();
+//    }
 }

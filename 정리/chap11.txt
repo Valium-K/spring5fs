@@ -1,0 +1,37 @@
+=== Command 객체 ===
+HttpServletRequest 객체를 통해 파라미터 값을 구할 수 있지만
+설정코드가 길기게 "command" 객체를 이용한다.
+
+command 객체는 요청 파라미터 각각의 값을 받을 수 있는
+각각의 setter가 포함된 객체여야 한다.
+
+해당 command 객체는 JSP에서 사용 가능하다.
+기본 이름은 클래스 명을 cammelCase로 적용한 것으로 사용한다.
+  ex) ${클래스(cammel case).파라미터}
+
+스프링의 <form:form> 태그에서 modelAtrribute="클래스(cammelCase)" 속성으로 똑같이 사용 가능
+	* 스프링 4.3 이하는 commandName 속성을 사용한다.
+	* modelAttribute 속성을 비워둘 경우 디폴트 이름으로 "command를 사용한다.
+
+뷰에서 사용할 command 객체의 이름을 바꾸고 싶다면
+command 객체 파라미터에 @ModelAttribute("바꿀이름")을 사용한다.
+
+=== 컨트롤러 구현 없는 경로매핑 ===
+아래와 같은 간단한 컨트롤러는 다음과 같이 설정하여 매핑 가능하다.
+@Controller
+public class MainController {
+  @RequestMapping("/main")
+  public String main() {
+	return "main";
+  }
+}
+
+WebMvcConfigurer를 상속받은 설정클래스에 다음을 추가한다.
+@Override
+public void addViewControllers(ViewControllerRegistry registry) {
+  registry.addViewController("/main").setViewName("main");
+
+
+
+
+  

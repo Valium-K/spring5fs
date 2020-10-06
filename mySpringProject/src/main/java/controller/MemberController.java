@@ -3,11 +3,15 @@ package controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import spring.member.Exceptions.DuplicationException;
+import spring.member.Exceptions.NotMatchingPWException;
 import spring.member.MemberRegisterService;
 import spring.member.RegisterRequest;
+import spring.member.RegisterRequestValidator;
 
 @Controller
 public class MemberController {
@@ -16,13 +20,21 @@ public class MemberController {
     private MemberRegisterService memberRegisterService;
 
     @GetMapping("register/regist")
-    public String registHandler(Model model) {
-        model.addAttribute("registerRequest", new RegisterRequest());
+
+    public String registHandler(RegisterRequest request, Errors errors) {
+        // model.addAttribute("registerRequest", new RegisterRequest());
         return "register/regist";
     }
 
-    @PostMapping("register/done")
-    public String done(RegisterRequest request) {
+    @PostMapping("register/regist")
+    public String done(RegisterRequest request, Errors errors) {
+        new RegisterRequestValidator().validate(request, errors);
+
+        if(errors.hasErrors()) {
+            System.out.println("hasErrors");
+            return "register/regist";
+        }
+
         try {
             if(request != null) {
                 System.out.println("id: " + request.getId() + ", pw: " + request.getPassword() + ", email: " + request.getEmail());
@@ -32,10 +44,16 @@ public class MemberController {
         }
         catch (DuplicationException e) {
             System.out.println("============ dup");
+            errors.rejectValue("id", "dupId");
             return "register/regist";
         }
         catch (NullPointerException e) {
             System.out.println("============ null");
+            return "register/regist";
+        }
+        catch (NotMatchingPWException e) {
+
+            errors.reject("notMatchingPassword");
             return "register/regist";
         }
     }

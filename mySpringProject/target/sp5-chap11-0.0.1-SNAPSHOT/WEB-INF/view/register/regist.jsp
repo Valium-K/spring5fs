@@ -1,3 +1,5 @@
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%--
   Created by IntelliJ IDEA.
   User: Administrator
@@ -8,24 +10,49 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>register</title>
+    <title>regist</title>
 </head>
 <body>
-    <form action="done" method="post">
+    <form:form modelAttribute="registerRequest">
         <label>
-            ID: <input type="text" name="id" id="id" value="${registerRequest.id}">
+            ID:
+            <form:input path="id"/>
+            <form:errors path="id"/>
         </label><br/>
         <label>
-            PW: <input type="text" name="password" id="password" value="${registerRequest.password}">
+            PW:
+            <form:input path="password"/>
+            <form:errors path="password"/>
         </label><br/>
+        <label>
+            PW Confirm:
+            <form:input path="passwordConfirm"/>
+            <form:errors path="passwordConfirm"/>
+        </label>
+        <form:errors />
+        <br/>
+        <label>
+            Email:
+            <form:input path="email"/>
+            <form:errors path="email"/>
+        </label><br/>
+        <input type="submit" value="submit" name="submit"></input>
+    </form:form>
+<%--    <form action="done" method="post">--%>
+<%--        <label>--%>
+<%--            ID: <input type="text" name="id" id="id" value="${registerRequest.id}">--%>
+<%--        </label><br/>--%>
+<%--        <label>--%>
+<%--            PW: <input type="text" name="password" id="password" value="${registerRequest.password}">--%>
+<%--        </label><br/>--%>
 
-        <label>
-            PW Confirm: <input type="text" name="passwordConfirm" id="passwordConfirm" value="${registerRequest.passwordConfirm}">
-        </label><br/>
-        <label>
-            Email: <input type="text" name="email" id="email" value="${registerRequest.email}">
-        </label><br/>
-        <input type="submit" value="Submit">
-    </form>
+<%--        <label>--%>
+<%--            PW Confirm: <input type="text" name="passwordConfirm" id="passwordConfirm" value="${registerRequest.passwordConfirm}">--%>
+<%--        </label><br/>--%>
+<%--        <label>--%>
+<%--            Email: <input type="text" name="email" id="email" value="${registerRequest.email}">--%>
+<%--        </label><br/>--%>
+<%--        <input type="submit" value="Submit">--%>
+<%--    </form>--%>
 </body>
 </html>
