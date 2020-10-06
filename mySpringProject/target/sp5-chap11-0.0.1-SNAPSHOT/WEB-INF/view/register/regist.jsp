@@ -13,31 +13,57 @@
     <title>regist</title>
 </head>
 <body>
-    <form:form modelAttribute="registerRequest">
-        <label>
-            ID:
-            <form:input path="id"/>
-            <form:errors path="id"/>
-        </label><br/>
-        <label>
-            PW:
-            <form:input path="password"/>
-            <form:errors path="password"/>
-        </label><br/>
-        <label>
-            PW Confirm:
-            <form:input path="passwordConfirm"/>
-            <form:errors path="passwordConfirm"/>
-        </label>
-        <form:errors />
-        <br/>
-        <label>
-            Email:
-            <form:input path="email"/>
-            <form:errors path="email"/>
-        </label><br/>
-        <input type="submit" value="submit" name="submit"></input>
-    </form:form>
+<%--Spring 태그 + @Valid 에러처리 방식--%>
+<form:form modelAttribute="registerRequest">
+    <label>
+        ID:
+        <form:input path="id"/>
+        <form:errors/>
+    </label><br/>
+    <label>
+        PW:
+        <form:input path="password"/>
+        <form:errors path="password"/>
+    </label><br/>
+    <label>
+        PW Confirm:
+        <form:input path="passwordConfirm"/>
+        <form:errors path="passwordConfirm"/>
+    </label>
+    <br/>
+    <label>
+        Email:
+        <form:input path="email"/>
+        <form:errors path="email"/>
+    </label><br/>
+    <input type="submit" value="submit" name="submit"></input>
+</form:form>
+<%--Spring 태그방식 에러처리 --%>
+<%--    <form:form modelAttribute="registerRequest">--%>
+<%--        <label>--%>
+<%--            ID:--%>
+<%--            <form:input path="id"/>--%>
+<%--            <form:errors path="id"/>--%>
+<%--        </label><br/>--%>
+<%--        <label>--%>
+<%--            PW:--%>
+<%--            <form:input path="password"/>--%>
+<%--            <form:errors path="password"/>--%>
+<%--        </label><br/>--%>
+<%--        <label>--%>
+<%--            PW Confirm:--%>
+<%--            <form:input path="passwordConfirm"/>--%>
+<%--            <form:errors path="passwordConfirm"/>--%>
+<%--        </label>--%>
+<%--        <br/>--%>
+<%--        <label>--%>
+<%--            Email:--%>
+<%--            <form:input path="email"/>--%>
+<%--            <form:errors path="email"/>--%>
+<%--        </label><br/>--%>
+<%--        <input type="submit" value="submit" name="submit"></input>--%>
+<%--    </form:form>--%>
+<%-- JSP 방식 -->
 <%--    <form action="done" method="post">--%>
 <%--        <label>--%>
 <%--            ID: <input type="text" name="id" id="id" value="${registerRequest.id}">--%>
@@ -45,7 +71,6 @@
 <%--        <label>--%>
 <%--            PW: <input type="text" name="password" id="password" value="${registerRequest.password}">--%>
 <%--        </label><br/>--%>
-
 <%--        <label>--%>
 <%--            PW Confirm: <input type="text" name="passwordConfirm" id="passwordConfirm" value="${registerRequest.passwordConfirm}">--%>
 <%--        </label><br/>--%>

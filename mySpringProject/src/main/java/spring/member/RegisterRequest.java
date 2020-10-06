@@ -1,9 +1,19 @@
 package spring.member;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
+
 public class RegisterRequest {
+    @NotEmpty
+    @NotBlank
     private String id;
+    @NotEmpty
     private String password;
+    @NotEmpty
     private String passwordConfirm;
+    @NotEmpty
+    @Size(min = 6)
     private String email;
 
     public String getId() {

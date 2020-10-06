@@ -28,7 +28,7 @@
 	
 	<Spring:message code="test.title" />
 	
-=== 메시지 - 유효성 검사 ===
+=== 메시지 - 유효성 검사(Validator 사용) ===
 Validator 인터페이스와 메시지 파일을 이용하여 폼에서 받은 커맨드 객체의 유효성을 검사한다.
 
 1. Validator 인터페이스 구체화.
@@ -54,8 +54,9 @@ Validator 인터페이스와 메시지 파일을 이용하여 폼에서 받은 �
 			errors.rejectValue("email", "required");
 		}
 		
-		// "name" 프로퍼티에 "required"라는 에러코드를 추가한다.
-		// 이 에러코드는 메시지 파일에 있어야한다. ex) required=필수항목입니다.
+		// "name" 필드에 "required"라는 에러코드를 추가한다.
+		// 즉, 이 에러코드는 메시지 파일에 있어야한다.
+		// 에러코드.필드이름.필드이름. ... -> ... -> 에러코드.필드이름 -> 에러코드 순으로 메시지를 찾는다.
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "name", "required");
 		ValidationUtils.rejectIfEmpty(errors, "password", "required");
 	}
@@ -68,9 +69,36 @@ Validator 인터페이스와 메시지 파일을 이용하여 폼에서 받은 �
 
         new RegisterRequestValidator().validate(request, errors);
 
-		// 
         if(errors.hasErrors()) {
-            System.out.println("hasErrors");
             return "register/regist";
         }
 	}
+	
+=== 메시지 - 유효성 검사(Validation Bean 사용) ===
+1. 의존성 추가(Maven)
+		<dependency>
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
+			<version>2.0.1.Final</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate.validator</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>6.1.5.Final</version>
+		</dependency>
+		
+2. 설정 클래스에 @EnableWebMvc 추가
+
+3. 요청 매핑 함수의 첫번째 인자인 커맨드클래스에 @Valid 추가.
+  ex)
+  @PostMapping
+  public String handler(@Valid RegisterRequest, Errors errors) { ... }
+  
+4. 커맨드 클래스의 필드에 애너테이션 추가
+  @NotBlank
+  @Email
+  private String email;
+  
+5. 메시지 설정
+  NotBlank=비워둘수없습니다.
+  Email=올바르지않은이메일형식입니다.

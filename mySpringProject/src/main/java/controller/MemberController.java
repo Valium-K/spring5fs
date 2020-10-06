@@ -13,6 +13,8 @@ import spring.member.MemberRegisterService;
 import spring.member.RegisterRequest;
 import spring.member.RegisterRequestValidator;
 
+import javax.validation.Valid;
+
 @Controller
 public class MemberController {
 
@@ -20,15 +22,15 @@ public class MemberController {
     private MemberRegisterService memberRegisterService;
 
     @GetMapping("register/regist")
-
-    public String registHandler(RegisterRequest request, Errors errors) {
+    public String registHandler( RegisterRequest request, Errors errors) {
         // model.addAttribute("registerRequest", new RegisterRequest());
         return "register/regist";
     }
 
     @PostMapping("register/regist")
-    public String done(RegisterRequest request, Errors errors) {
-        new RegisterRequestValidator().validate(request, errors);
+    public String done(@Valid RegisterRequest request, Errors errors) {
+        // @Valid 사용으로 Validator 코드는 주석
+        //new RegisterRequestValidator().validate(request, errors);
 
         if(errors.hasErrors()) {
             System.out.println("hasErrors");
