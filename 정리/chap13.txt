@@ -1,0 +1,89 @@
+=== Session ===
+서버쪽에서 세션정보를 기억한다.
+
+1. 요청 매핑 애너테이션 메서드에 HttpSession 
+혹은 HttpServletRequest를 추가 후 HttpServletRequest.getSession(boolean var1)을 사용해 세션을 얻는다.
+	* (var1 == (true||공백)) ? "세션이 없을시 새로운 세션생성 후 반환" : "세션이 없을시 null 반환"
+	
+2. 원하는 데이터를 session.setAttribute("속성", 데이터_객체) 로 저장한다.
+	* 삭제시 session.invalidate()를 이용한다.
+	
+3. View에서 "속성"으로 접근가능하다.
+	ex) ${속성.필드}
+	
+=== 인터셉터 ===
+컨트롤러 실행 전, 컨트롤러 실행 직후, 뷰를 뿌려준 이후 실행할 기능을 넣을 수 있다.
+예로 비 로그인 상태의 잘 못 된 요청을 리다이렉트 시킬 때 사용가능.
+	* DispatcherServlet과 컨트롤러(HandlerAdapter) 사이에 위치한다.
+
+HandlerInterceptor 인터페이스는 디폴트 메서드로 다음과 같다.
+
+	public interface HandlerInterceptor {
+	
+		// 컨트롤러(핸들러) 실행 전
+		// false 리턴하면 컨트롤러(핸들러)를 실행하지 않는다.
+		// Exception이 발생하면 컨트롤러(핸들러)를 실행하지 않는다.
+		default boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+			return true;
+		}
+		
+		// 컨트롤러(핸들러) 실행 직후
+		// 컨트롤러(핸들러)에서 Exception이 발생하면 이 메서드를 실행되지 않고 바로 afterCompletion의 4번째 파라미터에 해당 익셉션을 전달된다.
+		default void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, @Nullable ModelAndView modelAndView) throws Exception {
+		}
+
+		// 뷰를 뿌려준 후
+		// 예외 처리는 여기서 가능
+		default void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, @Nullable Exception ex) throws Exception {
+		}
+	}
+
+1. HandlerInterceptor 인터페이스를 구현한다.
+
+	public class AuthCheckInterceptor implements HandlerInterceptor {
+		@Override
+		public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+
+			HttpSession session = request.getSession(false);
+
+			if(session != null) {
+				Object authInfo = session.getAttribute("authInfo");
+				if(authInfo != null) {
+					return true;
+				}
+			}
+
+			// 경로가 http://localhost:8080/sp5-chap13일 경우 getCOntextPaht()는 /sp5-chap13를 리턴.
+			response.sendRedirect(request.getContextPath() + "/login");
+			return false;
+		}
+
+		@Override
+		public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+
+		}
+
+		@Override
+		public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+
+		}
+	}
+
+2. HandlerInterceptor를 어디에 적용할지 설정클래스에서 설정한다.
+
+	// AuthCheckInterceptor를 Bean으로 추가
+	@Bean
+	public AuthCheckInterceptor authCheckInterceptor() {
+		return new AuthCheckInterceptor();
+	}
+	
+	@Override
+	public void addInterceptors(InterceptorRegistry registry) {
+		// Ant 경로 패턴을 사용한다.
+		// 여기서는 /edit/** (/edit/폴더로 시작하는 모든경로) 에대해 AuthCheckInterceptor에서 구현한대로 작동한다.
+		// 참고로 excludePathPatterns("/edit/help/**"); 메서드도 있다.
+		// 더 추가할 Interceptor는 같은 형식으로 한줄씩 추가해준다.
+		registry.addInterceptor(authCheckInterceptor()).addPathPatterns("/edit/**");
+		
+	}
+
