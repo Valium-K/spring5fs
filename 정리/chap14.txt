@@ -1,0 +1,16 @@
+@PathVariable
+경로변수를 설정한다.
+
+ex) 
+	@GetMapping("/members/{id}")
+		public String detail(@PathVariable("id") Long memberId, Model model) {
+			Member member = memberDao.selectById(memberId);
+
+			if(member == null) throw new MemberNotFoundException();
+			
+			model.addAttribute("member", member);
+			return "member/memberDetail";
+		}
+		
+요청경로가 /members/10 이라하면 "members/{id}" 에서 {id}에 해당하는 부분의 경로를
+@PathVariable("id") 애너테이션이 적용된 memberId 파라미터에 전달된다.
