@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import org.springframework.web.bind.annotation.RestController;
 import spring.AuthService;
 import spring.ChangePasswordService;
 import spring.MemberDao;
@@ -63,5 +64,15 @@ public class ControllerConfig {
 
 		memberDetailController.setMemberDao(memberDao);
 		return memberDetailController;
+	}
+
+	@Bean
+	public RestMemberController restMemberController() {
+		RestMemberController restMemberController = new RestMemberController();
+
+		restMemberController.setMemberDao(memberDao);
+		restMemberController.setMemberRegisterService(memberRegSvc);
+
+		return restMemberController;
 	}
 }

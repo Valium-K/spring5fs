@@ -68,6 +68,20 @@
 			<artifactId>validation-api</artifactId>
 			<version>1.1.0.Final</version>
 		</dependency>
+
+		<!-- Jackson core와 jackson Annotation 의존 -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.11.2</version>
+		</dependency>
+
+		<!-- java8 date/time 지원 위한 jackson 모듈 -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.datatype</groupId>
+			<artifactId>jackson-datatype-jsr310</artifactId>
+			<version>2.11.1</version>
+		</dependency>
 	</dependencies>
 
 	<build>
